@@ -6,20 +6,13 @@ interface UIContextProviderProps {
   children: React.ReactNode | null;
 }
 
-interface UIContextProviderState {
-  dateNow: DateTime;
-  isModalOpen: boolean;
-}
-
 export const UIContextProvider = (props: UIContextProviderProps) => {
-  const [state, setState] = useState<UIContextProviderState>({
-    isModalOpen: false,
-    dateNow: DateTime.now(),
-  });
+  const [dateNow, setDateNow] = useState<DateTime>(DateTime.now());
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setState({ ...state, dateNow: DateTime.now() });
+      setDateNow(DateTime.now());
     }, 1000);
     return () => {
       clearInterval(interval);
@@ -27,12 +20,12 @@ export const UIContextProvider = (props: UIContextProviderProps) => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggleModal = () => {
-    setState({ ...state, isModalOpen: !state.isModalOpen });
+    setIsModalOpen(!isModalOpen);
   };
 
   const context: UIContextType = {
-    dateNow: state.dateNow,
-    isModalOpen: state.isModalOpen,
+    dateNow: dateNow,
+    isModalOpen: isModalOpen,
     toggleModal,
   };
 

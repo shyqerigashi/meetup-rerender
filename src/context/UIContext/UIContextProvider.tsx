@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { UIContext, UIContextType } from './UIContext';
 import { DateTime } from 'luxon';
 
@@ -7,24 +7,24 @@ interface UIContextProviderProps {
 }
 
 export const UIContextProvider = (props: UIContextProviderProps) => {
-  const [dateNow, setDateNow] = useState<DateTime>(DateTime.now());
+  const dateNow = useRef<DateTime>(DateTime.now());
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setDateNow(DateTime.now());
+      dateNow.current = DateTime.now();
     }, 1000);
     return () => {
       clearInterval(interval);
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
   const context: UIContextType = {
-    dateNow: dateNow,
+    dateNow: dateNow.current,
     isModalOpen: isModalOpen,
     toggleModal,
   };

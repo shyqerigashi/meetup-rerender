@@ -6,7 +6,8 @@ interface IHomeModal {
   toggleModal: () => void;
 }
 
-export const HomeModal = (props: IHomeModal) => {
+// this time, memo successfuly prevents component from rerendering because toggleModal doesn't change between rerenders.
+export const HomeModal = React.memo((props: IHomeModal) => {
   console.log('HomeModal render');
   return (
     <div className="HomeModal">
@@ -23,4 +24,4 @@ export const HomeModal = (props: IHomeModal) => {
       </Modal>
     </div>
   );
-};
+});

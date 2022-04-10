@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { UIContext, UIContextType } from './UIContext';
 import { DateTime } from 'luxon';
 
@@ -19,9 +19,9 @@ export const UIContextProvider = (props: UIContextProviderProps) => {
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+  const toggleModal = useCallback(() => {
+    setIsModalOpen((isModalOpen) => !isModalOpen);
+  }, []);
 
   const context: UIContextType = {
     dateNow: dateNow,

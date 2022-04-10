@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { UIContext, UIContextType } from './UIContext';
 import { DateTime } from 'luxon';
 
@@ -19,9 +19,13 @@ export const UIContextProvider = (props: UIContextProviderProps) => {
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+  /*
+    The callback is memoized, which means that the same reference will be returned each time.
+    This means that when React will compare this function to the function passed in the previous rerender, they will be equal (referential equality will pass).
+  */
+  const toggleModal = useCallback(() => {
+    setIsModalOpen((isModalOpen) => !isModalOpen);
+  }, []);
 
   const context: UIContextType = {
     dateNow: dateNow,
